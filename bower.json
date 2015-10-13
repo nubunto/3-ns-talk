@@ -1,0 +1,23 @@
+{
+  "name": "closure-scope-talk",
+  "version": "0.0.0",
+  "authors": [
+    "Bruno Panuto <bl.panuto@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "libs",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "reveal.js": "~3.1.0"
+  }
+}

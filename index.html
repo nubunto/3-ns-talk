@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Javascript Closures And Scope Chains</title>
+	<script src="libs/reveal.js/js/reveal.js"></script>
+	<link rel="stylesheet" href="libs/reveal.js/css/reveal.css">
+	<link rel="stylesheet" href="libs/reveal.js/css/theme/black.css">
+	<link rel="stylesheet" href="libs/reveal.js/lib/css/zenburn.css">
+</head>
+<body>
+	<div class="reveal">
+		<section class="slides">
+			<section>
+				<h1>Scope Chains & Closures</h1>
+				<aside class="notes">
+					Introdução. Apresentação. Comentar sobre as diferenças entre escopos de outras linguagens e JS. Comentar sobre closures. Dificuldades.
+				</aside>
+			</section>
+			<section>
+				<section>
+				<h2>O Escopo</h2>
+				<ul>
+					<li>Diferente das outras linguagens</li>
+					<li>Funções em JS</li>
+				</ul>
+				</section>
+				<section>
+					<h1>Global</h1>
+					<pre><code>
+var nome = 'Pablo Escobar';
+function dizerNome() {
+	return alert('olá querido leitor');
+}
+					</code></pre>
+					O contexto global é a janela do navegador, acessível pelo objeto <code>window</code>.
+				</section>
+				<section>
+					<h1>Local</h1>
+					<pre><code>
+function figuraOculta() {
+	var oculta = 'cachorro';
+	return alert('Existe uma figura oculta, que é um ' + oculta + ' atras.');
+}
+alert(atras); // erro
+					</code></pre>
+					Ao contrário do escopo global, as variáveis dentro de uma função <em>pertencem a função que engloba estas variáveis</em>.
+					Vale lembrar que em JavaScript, declarações sem var resultam na variável sendo jogada para o escopo global.
+				</section>
+			</section>
+			<section>
+				E se definirmos uma função dentro de uma função?
+				<pre><code>
+	function digaNome(nome) {
+		function capitalizar() {
+			return nome[0].toUpperCase() + nome.substr(1).toLowerCase();
+		}
+		return alert(capitalizar());
+	}
+	digaNome("RoBeRTO"); // alerta "Roberto".
+	// alertarNome() -> erro!
+				</code></pre>
+				As regras são as mesmas.
+			</section>
+			<section>
+				Vamos voltar ao último exemplo.
+				<pre><code>
+	function digaNome(nome) {
+		function capitalizar() {
+			return nome[0].toUpperCase() + nome.substr(1).toLowerCase();
+		}
+		return alert(capitalizar());
+	}
+				</code></pre>
+				Mesmo que eu não tenha declarado a variável <strong>nome</strong> dentro da função <strong>alertarNome</strong>, consigo usar este valor dentro da função "de dentro".
+			</section>
+		</section>
+	</div>
+</body>
+	<script src="libs/reveal.js/lib/js/head.min.js"></script>
+	<script>
+Reveal.initialize({
+	dependencies: [
+		{src: 'libs/reveal.js/plugin/highlight/highlight.js', callback: function() {hljs.initHighlightingOnLoad();}, condition: function() {return !!document.querySelector('pre code');}}
+	]
+});
+	</script>
+</html>
