@@ -30,8 +30,9 @@
 					<pre><code>
 var nome = 'Pablo Escobar';
 function dizerNome() {
-	return alert('olá querido leitor');
+	return alert(nome);
 }
+console.log(nome);
 					</code></pre>
 					O contexto global é a janela do navegador, acessível pelo objeto <code>window</code>.
 				</section>
@@ -42,37 +43,105 @@ function figuraOculta() {
 	var oculta = 'cachorro';
 	return alert('Existe uma figura oculta, que é um ' + oculta + ' atras.');
 }
-alert(atras); // erro
+alert(oculta); // erro
 					</code></pre>
 					Ao contrário do escopo global, as variáveis dentro de uma função <em>pertencem a função que engloba estas variáveis</em>.
 					Vale lembrar que em JavaScript, declarações sem var resultam na variável sendo jogada para o escopo global.
 				</section>
 			</section>
 			<section>
+				<section>
+					<h2>Declaração de variáveis</h2>
+					<ul>
+						<li>Regras de declaração de variáveis</li>
+						<li>Declarações com e sem "var"</li>
+						<li>Diferenças para com outras linguagens procedurais/orientadas a objetos</li>
+						<li>Variable hoisting</li>
+						<li>Function hoisting</li>
+						<li>"use strict";</li>
+					</ul>
+				</section>
+				<section>
+					<pre><code>
+function variableHoisting() {
+	alert(nome);
+	var nome = 'foo';
+}
+variableHoisting(); // não resulta em erro!
+					</code></pre>
+				</section>
+				<section>
+					<pre><code>
+function variableHoisting() {
+	"use strict";
+	alert(nome); 
+	var nome = 'foo';
+}
+variableHoisting(); // não resulta em erro!
+					</code></pre>
+				</section>
+			</section>
+			<section>
 				E se definirmos uma função dentro de uma função?
 				<pre><code>
-	function digaNome(nome) {
-		function capitalizar() {
-			return nome[0].toUpperCase() + nome.substr(1).toLowerCase();
-		}
-		return alert(capitalizar());
+function digaNome(nome) {
+	function capitalizar() {
+		return nome[0].toUpperCase() + nome.substr(1).toLowerCase();
 	}
-	digaNome("RoBeRTO"); // alerta "Roberto".
-	// alertarNome() -> erro!
+	return alert(capitalizar());
+}
+digaNome("RoBeRTO"); // alerta "Roberto".
+capitalizar() // erro!
 				</code></pre>
 				As regras são as mesmas.
 			</section>
 			<section>
 				Vamos voltar ao último exemplo.
 				<pre><code>
-	function digaNome(nome) {
-		function capitalizar() {
-			return nome[0].toUpperCase() + nome.substr(1).toLowerCase();
-		}
-		return alert(capitalizar());
+function digaNome(nome) {
+	function capitalizar() {
+		return nome[0].toUpperCase() + nome.substr(1).toLowerCase();
 	}
+	return alert(capitalizar());
+}
 				</code></pre>
 				Mesmo que eu não tenha declarado a variável <strong>nome</strong> dentro da função <strong>alertarNome</strong>, consigo usar este valor dentro da função "de dentro".
+			</section>
+			<section>
+				Uma função "se lembra" de variáveis definidas <strong>no contexto no qual ela própria é definida.</strong> Este é o conceito de <em>closures.</em>
+			</section>
+			<section>
+				Funções são <strong>a única construção no Javascript (antes do ES6)</strong> que cria <strong>um novo escopo</strong>. Isto significa que é possível usar funções para encapsular valores.
+				<pre><code>
+(function() {
+	var a = 0;
+	console.log(a); // escreve "0" no console
+
+	// a variável "a" só existe neste escopo.
+	// Logo, deixará de existir assim que esta função acabar
+})();
+console.log(a); // erro
+				</code></pre>
+				Note como é possível criar uma função e executá-la envolvendo-a em parênteses e chamando-a.
+			</section>
+			<section>
+				<section>
+				<h2>Funções são primeira classe</h2>
+				<pre><code>
+function soma(a) {
+	return function (b) {
+		return a + b;
+	}
+}
+var soma5 = soma(5);
+var resultado = soma5(3);
+alert(resultado); // alerta "8"
+				</code></pre>
+				</section>
+				<section>
+					Este código só funciona porque <strong>a função retornada se "lembra" do valor passado na primeira chamada</strong>.
+					Aliando closures a funções de primeira classe abre espaço para abstrações poderosas.
+				</section>
 			</section>
 		</section>
 	</div>
