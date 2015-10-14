@@ -24,6 +24,9 @@
 					<li>Diferente das outras linguagens</li>
 					<li>Funções em JS</li>
 				</ul>
+				<aside class="notes">
+					Apontar sobre as diferenças de escopo. Falar sobre funções em JS.
+				</aside>
 				</section>
 				<section>
 					<h1>Global</h1>
@@ -34,7 +37,7 @@ function dizerNome() {
 }
 console.log(nome);
 					</code></pre>
-					O contexto global é a janela do navegador, acessível pelo objeto <code>window</code>.
+					O contexto global é a janela do navegador, acessível pelo objeto <code>window</code> (no browser) e <code>global</code> no Node.
 				</section>
 				<section>
 					<h1>Local</h1>
@@ -67,7 +70,7 @@ function variableHoisting() {
 	alert(nome);
 	var nome = 'foo';
 }
-variableHoisting(); // não resulta em erro!
+variableHoisting(); // o que acontece?
 					</code></pre>
 				</section>
 				<section>
@@ -127,7 +130,7 @@ console.log(a); // erro
 			<section>
 				<section>
 				<h2>Funções são primeira classe</h2>
-				<pre><code>
+<pre><code>
 function soma(a) {
 	return function (b) {
 		return a + b;
@@ -136,12 +139,60 @@ function soma(a) {
 var soma5 = soma(5);
 var resultado = soma5(3);
 alert(resultado); // alerta "8"
-				</code></pre>
+</code></pre>
 				</section>
 				<section>
 					Este código só funciona porque <strong>a função retornada se "lembra" do valor passado na primeira chamada</strong>.
 					Aliando closures a funções de primeira classe abre espaço para abstrações poderosas.
 				</section>
+			</section>
+			<section>
+				<section>
+					<h2>Module Pattern</h2>
+					Consiste em retornar um objeto de uma closure, mas manter dados sensíveis encapsulados de usuários do "lado de fora".
+				</section>
+				<section>
+<pre><code>
+function Walker(seed) {
+	var init = seed || 0;
+	return {
+		next: function() {
+			return ++seed;
+		},
+		cur: function() {
+			return seed;
+		},
+		back: function() {
+			return --seed;
+		}
+	};
+}
+var first = Walker(5);
+console.log(first.next()); // 6
+console.log(first.next()); // 7 
+console.log(first.next()); // 8
+
+var second = Walker();
+console.log(second.next()); // 1
+console.log(second.cur());  // 1
+console.log(second.back()); // 0
+
+// first.seed -> erro!
+// second.seed -> erro!
+</code></pre>
+				</section>
+				<section>
+					Isso permite que possamos escolher quais métodos estão abertos para usuários da nossa função, e também regras para acesso das variáveis privadas.
+				</section>
+			</section>
+			<section>
+				<h2>E as scope chains?</h2>
+			</section>
+			<section>
+				É como a runtime engine JavaScript resolve o lookup de variáveis. Devemos visualizar o escopo como uma "cadeia".
+			</section>
+			<section>
+				<img src="scope.gif" alt="" style="width: 100%; height: 100%;">
 			</section>
 		</section>
 	</div>
@@ -150,7 +201,15 @@ alert(resultado); // alerta "8"
 	<script>
 Reveal.initialize({
 	dependencies: [
-		{src: 'libs/reveal.js/plugin/highlight/highlight.js', callback: function() {hljs.initHighlightingOnLoad();}, condition: function() {return !!document.querySelector('pre code');}}
+		{
+			src: 'libs/reveal.js/plugin/highlight/highlight.js', 
+			callback: function() {hljs.initHighlightingOnLoad();}, 
+			condition: function() {return !!document.querySelector('pre code');}
+		},
+		{
+			src: 'libs/reveal.js/plugin/notes/notes.js', 
+			async: true
+		}
 	]
 });
 	</script>
