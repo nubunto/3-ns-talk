@@ -82,6 +82,17 @@ function variableHoisting() {
 variableHoisting(); // não resulta em erro!
 					</code></pre>
 				</section>
+				<section>
+					<strong>O código executado fica, na verdade, assim:</strong>
+					<pre><code>
+function variableHoisting() {
+	var nome; // declaração movida para início do escopo
+	alert(nome); 
+	nome = 'foo';
+}
+variableHoisting(); // alerta undefined 
+					</code></pre>
+				</section>
 			</section>
 			<section>
 				E se definirmos uma função dentro de uma função?
@@ -115,7 +126,7 @@ function digaNome(nome) {
 				<p>Este é o conceito de <em>closures.</em></p>
 			</section>
 			<section>
-				Funções são <strong>a única construção no Javascript (antes do ES6)</strong> que cria <strong>um novo escopo</strong>. Isto significa que é possível usar funções para encapsular valores.
+				Funções são <strong>a única construção no Javascript</strong> que cria <strong>um novo escopo</strong>. Isto significa que é possível usar funções para encapsular valores, mantendo-os "privados".
 				<pre><code>
 (function() {
 	var a = 0;
@@ -131,6 +142,7 @@ console.log(a); // erro
 			<section>
 				<section>
 				<h2>Funções são primeira classe</h2>
+				Podemos retorná-las de funções como se fossem valores. 
 <pre><code>
 function soma(a) {
 	return function (b) {
@@ -158,13 +170,13 @@ function Walker(seed) {
 	var init = seed || 0;
 	return {
 		next: function() {
-			return ++seed;
+			return ++init;
 		},
 		cur: function() {
-			return seed;
+			return init;
 		},
 		back: function() {
-			return --seed;
+			return --init;
 		}
 	};
 }
@@ -194,6 +206,16 @@ console.log(second.back()); // 0
 			</section>
 			<section>
 				<img src="scope.gif" alt="" style="width: 100%; height: 100%;">
+			</section>
+			<section>
+				<h3>Dúvidas?</h3>
+			</section>
+			<section>
+				<h1>Obrigado!</h1>
+					<p>Twitter: <a href="http://twitter.com/panuto_">@panuto_</a></p>
+					<p>Github: <a href="http://github.com/nubunto_">@nubunto</a></p>
+				<br>
+				<p>Nodeschool Campinas 2015</p>
 			</section>
 		</section>
 	</div>
